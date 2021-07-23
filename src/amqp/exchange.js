@@ -31,7 +31,7 @@ function aliasOptions (options, aliases, ...omit) {
 }
 
 function define (channel, options, connectionName) {
-  var valid = aliasOptions(options, {
+  const valid = aliasOptions(options, {
     alternate: 'alternateExchange'
   }, 'limit', 'persistent', 'publishTimeout');
   topLog.info("Declaring %s exchange '%s' on connection '%s' with the options: %s",
@@ -62,21 +62,21 @@ function getContentType (message) {
 }
 
 function publish (channel, options, topology, log, serializers, message) {
-  var channelName = options.name;
-  var type = options.type;
-  var baseHeaders = {
+  const channelName = options.name;
+  const type = options.type;
+  const baseHeaders = {
     CorrelationId: message.correlationId
   };
   message.headers = Object.assign(baseHeaders, message.headers);
-  var contentType = getContentType(message);
-  var serializer = serializers[contentType];
+  const contentType = getContentType(message);
+  const serializer = serializers[contentType];
   if (!serializer) {
-    var errMessage = format("Failed to publish message with contentType '%s' - no serializer defined", contentType);
+    const errMessage = format("Failed to publish message with contentType '%s' - no serializer defined", contentType);
     exLog.error(errMessage);
     return Promise.reject(new Error(errMessage));
   }
-  var payload = serializer.serialize(message.body);
-  var publishOptions = {
+  const payload = serializer.serialize(message.body);
+  const publishOptions = {
     type: message.type || '',
     contentType: contentType,
     contentEncoding: 'utf8',
@@ -99,7 +99,7 @@ function publish (channel, options, topology, log, serializers, message) {
     publishOptions.persistent = true;
   }
 
-  var effectiveKey = message.routingKey === '' ? '' : message.routingKey || publishOptions.type;
+  const effectiveKey = message.routingKey === '' ? '' : message.routingKey || publishOptions.type;
   exLog.debug("Publishing message ( type: '%s' topic: '%s', sequence: '%s', correlation: '%s', replyTo: '%s' ) to %s exchange '%s' on connection '%s'",
     publishOptions.type,
     effectiveKey,
@@ -129,8 +129,8 @@ function publish (channel, options, topology, log, serializers, message) {
     );
     return Promise.resolve();
   } else {
-    var deferred = defer();
-    var promise = deferred.promise;
+    const deferred = defer();
+    const promise = deferred.promise;
 
     channel.publish(
       channelName,

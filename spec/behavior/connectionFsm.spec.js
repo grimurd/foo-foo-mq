@@ -1,12 +1,12 @@
 require('../setup.js');
-var connectionFn = require('../../src/connectionFsm.js');
-var noOp = function () {};
-var EventEmitter = require('events');
+const connectionFn = require('../../src/connectionFsm.js');
+const noOp = function () {};
+const EventEmitter = require('events');
 
 /* globals expect */
 
-var connectionMonadFn = function () {
-  var handlers = {};
+const connectionMonadFn = function () {
+  let handlers = {};
 
   function raise (ev) {
     if (handlers[ev]) {
@@ -26,7 +26,7 @@ var connectionMonadFn = function () {
     this.release = noOp;
   }
 
-  var instance = {
+  const instance = {
     acquire: function () {
       this.raise('acquiring');
       return Promise.resolve();
@@ -46,12 +46,12 @@ var connectionMonadFn = function () {
 
 describe('Connection FSM', function () {
   describe('when configuration has getter', function () {
-    var connection;
+    let connection;
     it('should not throw exception', function () {
       expect(function () {
         connection = connectionFn({
           get: function (property) {
-            var value = this[property];
+            const value = this[property];
             if (value === undefined) {
               throw new Error('Configuration property "' + property + '" is not defined');
             }
@@ -68,7 +68,7 @@ describe('Connection FSM', function () {
 
   describe('when connection is unavailable (failed)', function () {
     describe('when connecting', function () {
-      var connection, monad;
+      let connection, monad;
       before(function (done) {
         monad = connectionMonadFn();
         connection = connectionFn({ name: 'failure' }, function () {
@@ -90,7 +90,7 @@ describe('Connection FSM', function () {
       });
 
       describe('implicitly (due to operation)', function () {
-        var error;
+        let error;
         before(function (done) {
           monad.createChannel = function () {
             return Promise.reject(new Error(':( no can do'));
@@ -135,7 +135,7 @@ describe('Connection FSM', function () {
 
   describe('when connection is available', function () {
     describe('when first node fails', function () {
-      var connection, monad, badEvent, onAcquiring;
+      let connection, monad, badEvent, onAcquiring;
       before(function (done) {
         // this nightmare of a test setup causes the FSM to get a failed
         // event from the connection monad.
@@ -145,7 +145,7 @@ describe('Connection FSM', function () {
         // causing the FSM to transition into a connected state and emit 'connected'
         // but it should NOT emit 'reconnected' despite failures since an original connection
         // was never established
-        var attempts = ['acquired', 'failed'];
+        const attempts = ['acquired', 'failed'];
         monad = connectionMonadFn();
         connection = connectionFn({ name: 'success' }, function () {
           return monad;
@@ -163,7 +163,7 @@ describe('Connection FSM', function () {
           });
         });
         onAcquiring = connection.on('connecting', function () {
-          var ev = attempts.pop();
+          const ev = attempts.pop();
           process.nextTick(function () {
             monad.raise(ev);
           });
@@ -180,7 +180,7 @@ describe('Connection FSM', function () {
     });
 
     describe('when connecting (with failed initial attempt)', function () {
-      var connection, monad, badEvent, onAcquiring, channel;
+      let connection, monad, badEvent, onAcquiring, channel;
       before(function (done) {
         // this nightmare of a test setup causes the FSM to get a failed
         // event from the connection monad.
@@ -190,7 +190,7 @@ describe('Connection FSM', function () {
         // causing the FSM to transition into a connected state and emit 'connected'
         // but it should NOT emit 'reconnected' despite failures since an original connection
         // was never established
-        var attempts = ['acquired', 'failed'];
+        const attempts = ['acquired', 'failed'];
         monad = connectionMonadFn();
         connection = connectionFn({ name: 'success' }, function () {
           return monad;
@@ -208,7 +208,7 @@ describe('Connection FSM', function () {
           });
         });
         onAcquiring = connection.on('connecting', function () {
-          var ev = attempts.pop();
+          const ev = attempts.pop();
           process.nextTick(function () {
             monad.raise(ev);
           });
@@ -243,8 +243,8 @@ describe('Connection FSM', function () {
       });
 
       describe('when closing with queues', function () {
-        var queueMock;
-        var queue = { release: noOp };
+        let queueMock;
+        const queue = { release: noOp };
         before(function () {
           queueMock = sinon.mock(queue);
           queueMock.expects('release').exactly(5).returns(Promise.resolve(true));
@@ -275,8 +275,8 @@ describe('Connection FSM', function () {
       });
 
       describe('when closing with queues after lost connection', function () {
-        var queueMock;
-        var queue = { release: noOp };
+        let queueMock;
+        const queue = { release: noOp };
         before(function () {
           queueMock = sinon.mock(queue);
           queueMock.expects('release').never();
@@ -298,7 +298,7 @@ describe('Connection FSM', function () {
       });
 
       describe('when connection is lost', function () {
-        var onAcquired;
+        let onAcquired;
         before(function () {
           onAcquired = connection.on('connecting', function () {
             monad.raise('acquired');

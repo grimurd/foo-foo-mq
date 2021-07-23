@@ -12,7 +12,7 @@ const config = require('./configuration');
   this works when in use in rabbot.
 */
 describe('Topic Exchange With Alternate Bindings', function () {
-  var harness;
+  let harness;
 
   before(function (done) {
     rabbit.configure({

@@ -1,11 +1,11 @@
 require('../setup.js');
-var _ = require('lodash');
-var queueFsm = require('../../src/queueFsm');
-var noOp = function () {};
-var emitter = require('./emitter');
+const _ = require('lodash');
+const queueFsm = require('../../src/queueFsm');
+const noOp = function () {};
+const emitter = require('./emitter');
 
 function channelFn (options) {
-  var channel = {
+  const channel = {
     name: options.name,
     type: options.type,
     channel: emitter(),
@@ -18,7 +18,7 @@ function channelFn (options) {
     subscribe: noOp,
     unsubscribe: noOp
   };
-  var channelMock = sinon.mock(channel);
+  const channelMock = sinon.mock(channel);
 
   return {
     mock: channelMock,
@@ -30,7 +30,7 @@ function channelFn (options) {
 
 describe('Queue FSM', function () {
   describe('when initialization fails', function () {
-    var connection, topology, queue, channelMock, options, error;
+    let connection, topology, queue, channelMock, options, error;
 
     before(function (done) {
       options = { name: 'test', type: 'test' };
@@ -38,7 +38,7 @@ describe('Queue FSM', function () {
       connection.addQueue = noOp;
       topology = emitter();
 
-      var ch = channelFn(options);
+      const ch = channelFn(options);
       channelMock = ch.mock;
       channelMock
         .expects('define')
@@ -80,7 +80,7 @@ describe('Queue FSM', function () {
   });
 
   describe('when initializing succeeds', function () {
-    var connection, topology, queue, ch, channelMock, options, error;
+    let connection, topology, queue, ch, channelMock, options, error;
 
     before(function (done) {
       options = { name: 'test', type: 'test' };
@@ -185,7 +185,7 @@ describe('Queue FSM', function () {
     });
 
     describe('when channel is closed remotely', function () {
-      var channel;
+      let channel;
       before(function (done) {
         channelMock
           .expects('define')

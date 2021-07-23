@@ -24,11 +24,11 @@ function close (name, channel) {
 
 module.exports = {
   create: function (connection, name, confirm) {
-    var method = confirm ? 'createConfirmChannel' : 'createChannel';
-    var factory = function () {
+    const method = confirm ? 'createConfirmChannel' : 'createChannel';
+    const factory = function () {
       return connection[method]();
     };
-    var channel = monad({ name: name }, 'channel', factory, AmqpChannel, close.bind(null, name));
+    const channel = monad({ name: name }, 'channel', factory, AmqpChannel, close.bind(null, name));
     return channel;
   }
 };

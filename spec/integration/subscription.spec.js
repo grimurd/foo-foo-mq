@@ -7,7 +7,7 @@ A promise, twice made, is not a promise for more,
 it's simply reassurance for the insecure.
 */
 describe('Duplicate Subscription', function () {
-  var harness;
+  let harness;
 
   before(function (done) {
     rabbit.configure({

@@ -73,9 +73,9 @@ describe('Purge Queue', function () {
 
   describe('when subcribed', function () {
     describe('and queue is autodelete', function () {
-      var purgeCount;
-      var harness;
-      var handler;
+      let purgeCount;
+      let harness;
+      let handler;
       before(function (done) {
         rabbit.configure({
           connection: config.connection,
@@ -160,9 +160,9 @@ describe('Purge Queue', function () {
     });
 
     describe('and queue is not autodelete', function () {
-      var purgeCount;
-      var harness;
-      var handler;
+      let purgeCount;
+      let harness;
+      let handler;
       before(function (done) {
         rabbit.configure({
           connection: config.connection,

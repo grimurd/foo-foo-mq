@@ -63,7 +63,7 @@ const serializers = {
   }
 };
 
-var Broker = function () {
+const Broker = function () {
   this.connections = {};
   this.hasHandles = false;
   this.autoNack = false;
@@ -275,7 +275,7 @@ Broker.prototype.getQueue = function (name, connectionName = DEFAULT) {
 
 Broker.prototype.handle = function (messageType, handler, queueName, context) {
   this.hasHandles = true;
-  var options;
+  let options;
   if (typeof messageType === 'string') {
     options = {
       type: messageType,
@@ -365,7 +365,7 @@ Broker.prototype.onExchanges = function (exchanges, connectionName = DEFAULT) {
       }
     ).then(
       list => {
-        list.map(item => {
+        list.forEach(item => {
           if (item && item.exchange) {
             const exchange = this.getExchange(item.name, connectionName);
             set[item.name] = exchange;
@@ -489,7 +489,7 @@ Broker.prototype.reset = function () {
 };
 
 Broker.prototype.retry = function (connectionName = DEFAULT) {
-  var config = this.configurations[connectionName];
+  const config = this.configurations[connectionName];
   return this.configure(config);
 };
 
@@ -515,7 +515,7 @@ Broker.prototype.startSubscription = function (queueName, exclusive = false, con
     connectionName = exclusive;
     exclusive = false;
   }
-  var queue = this.getQueue(queueName, connectionName);
+  const queue = this.getQueue(queueName, connectionName);
   if (queue) {
     return queue.subscribe(exclusive);
   } else {
@@ -524,7 +524,7 @@ Broker.prototype.startSubscription = function (queueName, exclusive = false, con
 };
 
 Broker.prototype.stopSubscription = function (queueName, connectionName = DEFAULT) {
-  var queue = this.getQueue(queueName, connectionName);
+  const queue = this.getQueue(queueName, connectionName);
   if (queue) {
     queue.unsubscribe();
     return queue;
@@ -548,6 +548,6 @@ require('./config.js')(Broker);
 
 Monologue.mixInto(Broker);
 
-var broker = new Broker();
+const broker = new Broker();
 
 module.exports = broker;

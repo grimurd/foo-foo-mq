@@ -3,7 +3,7 @@ const rabbit = require('../../src/index.js');
 const config = require('./configuration');
 
 describe('Unroutable Messages - Alternate Exchanges', function () {
-  var harness;
+  let harness;
 
   before(function (done) {
     rabbit.configure({

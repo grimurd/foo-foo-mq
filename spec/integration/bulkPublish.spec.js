@@ -7,7 +7,7 @@ const config = require('./configuration');
  in both formats.
 */
 describe('Bulk Publish', function () {
-  var harness;
+  let harness;
 
   before(function (done) {
     this.timeout(10000);

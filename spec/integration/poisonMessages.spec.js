@@ -8,7 +8,7 @@ const config = require('./configuration');
   message instead of melting down the process
 */
 describe('Invalid Message Format', function () {
-  var harness;
+  let harness;
 
   before(function (done) {
     rabbit.configure({

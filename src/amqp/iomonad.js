@@ -42,7 +42,7 @@ let staticId = 0;
 */
 
 module.exports = function (options, type, factory, target, close) {
-  var IOMonad = machina.Fsm.extend({
+  const IOMonad = machina.Fsm.extend({
     id: staticId++,
     initialState: 'acquiring',
     item: undefined,
@@ -209,7 +209,7 @@ module.exports = function (options, type, factory, target, close) {
         },
         operate: function (call) {
           try {
-            var result = this.item[call.operation].apply(this.item, call.argList);
+            const result = this.item[call.operation].apply(this.item, call.argList);
             if (result && result.then) {
               result
                 .then(call.resolve, call.reject);
@@ -343,14 +343,14 @@ module.exports = function (options, type, factory, target, close) {
   });
 
   Monologue.mixInto(IOMonad);
-  var machine = new IOMonad();
+  const machine = new IOMonad();
 
   const names = Object.getOwnPropertyNames(target.prototype);
   names.forEach(name => {
     const prop = target.prototype[name];
     if (typeof prop === 'function') {
       machine[name] = function () {
-        var list = Array.prototype.slice.call(arguments, 0);
+        const list = Array.prototype.slice.call(arguments, 0);
         return machine.operate(name, list);
       };
     }

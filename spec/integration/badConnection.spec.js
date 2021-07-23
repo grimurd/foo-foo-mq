@@ -4,7 +4,7 @@ const rabbit = require('../../src/index.js');
 describe('Bad Connection', function () {
   const noop = () => {};
   describe('when attempting a connection', function () {
-    var error;
+    let error;
     before((done) => {
       rabbit.once('#.connection.failed', (err) => {
         error = err;
@@ -34,7 +34,7 @@ describe('Bad Connection', function () {
   });
 
   describe('when attempting a uri connection with an invalid password', function () {
-    var error;
+    let error;
     before((done) => {
       rabbit.once('#.connection.failed', (err) => {
         error = err;
@@ -56,7 +56,7 @@ describe('Bad Connection', function () {
   });
 
   describe('when configuring against a bad connection', function () {
-    var config;
+    let config;
     before(() => {
       config = {
         connection: {

@@ -1,13 +1,13 @@
 
 module.exports = function (rabbit) {
   // variable to hold starting time
-  var started = Date.now();
+  const started = Date.now();
 
   // variable to hold received count
-  var received = 0;
+  let received = 0;
 
   // expected message count
-  var expected = 10000;
+  const expected = 10000;
 
   // always setup your message handlers first
 

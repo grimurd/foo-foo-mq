@@ -17,7 +17,7 @@ function stallLongEnoughForBatchAckHandling () {
 }
 
 describe('Wild Card Type Handling', function () {
-  var harness;
+  let harness;
 
   before(function () {
     harness = harnessFactory(rabbit, () => {}, 3);

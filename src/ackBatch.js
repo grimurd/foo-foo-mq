@@ -43,6 +43,7 @@ AckBatch.prototype._ackOrNackSequence = function () {
   let sequenceEnd = firstMessage.tag;
   const call = calls[firstStatus];
   if (firstStatus === 'pending') {
+    // empty
   } else {
     for (let i = 1; i < this.messages.length - 1; i++) {
       if (this.messages[i].status !== firstStatus) {
@@ -57,7 +58,7 @@ AckBatch.prototype._ackOrNackSequence = function () {
 };
 
 AckBatch.prototype._firstByStatus = function (status) {
-  for (var i = 0; i < this.messages.length; i++) {
+  for (let i = 0; i < this.messages.length; i++) {
     if (this.messages[i].status === status) {
       return this.messages[i];
     }
@@ -66,7 +67,7 @@ AckBatch.prototype._firstByStatus = function (status) {
 };
 
 AckBatch.prototype._findIndex = function (status) {
-  for (var i = 0; i < this.messages.length; i++) {
+  for (let i = 0; i < this.messages.length; i++) {
     if (this.messages[i].status === status) {
       return i;
     }
@@ -75,7 +76,7 @@ AckBatch.prototype._findIndex = function (status) {
 };
 
 AckBatch.prototype._lastByStatus = function (status) {
-  for (var i = this.messages.length - 1; i >= 0; i--) {
+  for (let i = this.messages.length - 1; i >= 0; i--) {
     if (this.messages[i].status === status) {
       return this.messages[i];
     }

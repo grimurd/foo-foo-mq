@@ -1,9 +1,9 @@
 require('../setup.js');
-var Monad = require('../../src/amqp/iomonad.js');
-var EventEmitter = require('events');
-var util = require('util');
+const Monad = require('../../src/amqp/iomonad.js');
+const EventEmitter = require('events');
+const util = require('util');
 
-var Resource = function () {
+const Resource = function () {
   this.closed = false;
   EventEmitter.call(this);
 };
@@ -20,9 +20,9 @@ Resource.prototype.close = function () {
 
 describe('IO Monad', function () {
   describe('when resource is acquired successfully', function () {
-    var resource, acquiring, releasedHandle, opResult;
+    let resource, acquiring, releasedHandle, opResult;
     before(function (done) {
-      var factory = function () {
+      const factory = function () {
         return Promise.resolve(new Resource());
       };
 
@@ -71,11 +71,11 @@ describe('IO Monad', function () {
   });
 
   describe('when resource is unavailable', function () {
-    var resource, error;
-    var acquiring = 0;
-    var acquiringHandle, failedHandle;
+    let resource, error;
+    let acquiring = 0;
+    let acquiringHandle, failedHandle;
     before(function (done) {
-      var factory = function () {
+      const factory = function () {
         return Promise.reject(new Error('because no one likes you'));
       };
 
@@ -122,11 +122,11 @@ describe('IO Monad', function () {
   });
 
   describe('when acquired resource emits an error', function () {
-    var resource, error;
-    var acquiring = 0;
-    var acquiredHandle, acquiringHandle, failedHandle;
+    let resource, error;
+    let acquiring = 0;
+    let acquiredHandle, acquiringHandle, failedHandle;
     before(function (done) {
-      var factory = function () {
+      const factory = function () {
         return Promise.resolve(new Resource());
       };
 
@@ -181,11 +181,11 @@ describe('IO Monad', function () {
   });
 
   describe('when acquired resource is closed remotely', function () {
-    var resource, closeReason;
-    var acquiring = 0;
-    var acquiredHandle, acquiringHandle;
+    let resource, closeReason;
+    let acquiring = 0;
+    let acquiredHandle, acquiringHandle;
     before(function (done) {
-      var factory = function () {
+      const factory = function () {
         return new Promise(function (resolve) {
           process.nextTick(function () {
             resolve(new Resource());
@@ -238,11 +238,11 @@ describe('IO Monad', function () {
   });
 
   describe('when acquired resource is released locally', function () {
-    var resource, closeReason;
-    var acquiring = 0;
-    var acquiredHandle, acquiringHandle;
+    let resource, closeReason;
+    let acquiring = 0;
+    let acquiredHandle, acquiringHandle;
     before(function (done) {
-      var factory = function () {
+      const factory = function () {
         return new Promise(function (resolve) {
           process.nextTick(function () {
             resolve(new Resource());
@@ -292,11 +292,11 @@ describe('IO Monad', function () {
   });
 
   describe('when operating against a released resource', function () {
-    var resource;
-    var acquiring = 0;
-    var acquiredHandle, acquiringHandle;
+    let resource;
+    let acquiring = 0;
+    let acquiredHandle, acquiringHandle;
     before(function (done) {
-      var factory = function () {
+      const factory = function () {
         return new Promise(function (resolve) {
           process.nextTick(function () {
             resolve(new Resource());
@@ -351,11 +351,11 @@ describe('IO Monad', function () {
   });
 
   describe('when operating against a closed resource', function () {
-    var resource, opResult;
-    var acquiring = 0;
-    var acquiredHandle, acquiringHandle;
+    let resource, opResult;
+    let acquiring = 0;
+    let acquiredHandle, acquiringHandle;
     before(function (done) {
-      var factory = function () {
+      const factory = function () {
         return new Promise(function (resolve) {
           process.nextTick(function () {
             resolve(new Resource());
@@ -415,15 +415,15 @@ describe('IO Monad', function () {
   });
 
   describe('when custom wait options are defined', function () {
-    var resource, releasedHandle;
-    var options = {
+    let resource, releasedHandle;
+    const options = {
       name: 'test',
       waitMin: 1000,
       waitMax: 30000,
       waitIncrement: 1000
     };
     before(function (done) {
-      var factory = function () {
+      const factory = function () {
         return Promise.resolve(new Resource());
       };
 

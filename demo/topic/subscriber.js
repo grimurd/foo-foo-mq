@@ -1,5 +1,5 @@
 
-var rabbit = require('../../src/index.js');
+const rabbit = require('../../src/index.js');
 
 require('./topology')(rabbit)
   .then(function () {

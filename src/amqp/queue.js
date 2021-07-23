@@ -39,7 +39,7 @@ function aliasOptions (options, aliases, ...omit) {
 }
 
 function define (channel, options, subscriber, connectionName) {
-  var valid = aliasOptions(options, {
+  const valid = aliasOptions(options, {
     queuelimit: 'maxLength',
     queueLimit: 'maxLength',
     deadletter: 'deadLetterExchange',
@@ -95,7 +95,7 @@ function getCount (messages) {
 function getNoBatchOps (channel, raw, messages, noAck) {
   messages.receivedCount += 1;
 
-  var ack, nack, reject;
+  let ack, nack, reject;
   if (noAck) {
     ack = noOp;
     nack = function () {
@@ -127,23 +127,23 @@ function getNoBatchOps (channel, raw, messages, noAck) {
 }
 
 function getReply (channel, serializers, raw, replyQueue, connectionName) {
-  var position = 0;
+  let position = 0;
   return function (reply, options) {
-    var defaultReplyType = raw.type + '.reply';
-    var replyType = options ? (options.replyType || defaultReplyType) : defaultReplyType;
-    var contentType = getContentType(reply, options);
-    var serializer = serializers[contentType];
+    const defaultReplyType = raw.type + '.reply';
+    const replyType = options ? (options.replyType || defaultReplyType) : defaultReplyType;
+    const contentType = getContentType(reply, options);
+    const serializer = serializers[contentType];
     if (!serializer) {
-      var message = format('Failed to publish message with contentType %s - no serializer defined', contentType);
+      const message = format('Failed to publish message with contentType %s - no serializer defined', contentType);
       log.error(message);
       return Promise.reject(new Error(message));
     }
-    var payload = serializer.serialize(reply);
+    const payload = serializer.serialize(reply);
 
-    var replyTo = raw.properties.replyTo;
+    const replyTo = raw.properties.replyTo;
     raw.ack();
     if (replyTo) {
-      var publishOptions = {
+      const publishOptions = {
         type: replyType,
         contentType: contentType,
         contentEncoding: 'utf8',
@@ -328,9 +328,9 @@ function resolveTags (channel, queue, connection) {
 }
 
 function subscribe (channelName, channel, topology, serializers, messages, options, exclusive) {
-  var shouldAck = !options.noAck;
-  var shouldBatch = !options.noBatch;
-  var shouldCacheKeys = !options.noCacheKeys;
+  const shouldAck = !options.noAck;
+  const shouldBatch = !options.noBatch;
+  const shouldCacheKeys = !options.noCacheKeys;
   // this is done to support rabbit-assigned queue names
   channelName = channelName || options.name;
   if (shouldAck && shouldBatch) {
@@ -349,8 +349,8 @@ function subscribe (channelName, channel, topology, serializers, messages, optio
       log.warn("Queue '%s' was sent a consumer cancel notification");
       throw new Error('Broker cancelled the consumer remotely');
     }
-    var correlationId = raw.properties.correlationId;
-    var ops = getResolutionOperations(channel, raw, messages, options);
+    const correlationId = raw.properties.correlationId;
+    const ops = getResolutionOperations(channel, raw, messages, options);
 
     raw.ack = ops.ack.bind(ops);
     raw.reject = ops.reject.bind(ops);
@@ -361,13 +361,13 @@ function subscribe (channelName, channel, topology, serializers, messages, optio
       options.exclusive = true;
     }
     raw.queue = channelName;
-    var parts = [options.name.replace(/[.]/g, '-')];
+    const parts = [options.name.replace(/[.]/g, '-')];
     if (raw.type) {
       parts.push(raw.type);
     }
-    var topic = parts.join('.');
-    var contentType = raw.properties.contentType || 'application/octet-stream';
-    var serializer = serializers[contentType];
+    let topic = parts.join('.');
+    const contentType = raw.properties.contentType || 'application/octet-stream';
+    const serializer = serializers[contentType];
     const track = () => {
       if (shouldAck && shouldBatch) {
         messages.addMessage(ops);
@@ -403,8 +403,8 @@ function subscribe (channelName, channel, topology, serializers, messages, optio
       }
     }
 
-    var onPublish = function (data) {
-      var handled;
+    const onPublish = function (data) {
+      let handled;
 
       if (data.activated) {
         handled = true;
@@ -461,12 +461,12 @@ function unsubscribe (channel, options) {
 }
 
 module.exports = function (options, topology, serializers) {
-  var channelName = ['queue', options.uniqueName].join(':');
+  const channelName = ['queue', options.uniqueName].join(':');
   return topology.connection.getChannel(channelName, false, 'queue channel for ' + options.name)
     .then(function (channel) {
-      var messages = new AckBatch(options.name, topology.connection.name, resolveTags(channel, options.name, topology.connection.name));
-      var subscriber = subscribe.bind(undefined, options.uniqueName, channel, topology, serializers, messages, options);
-      var definer = define.bind(undefined, channel, options, subscriber, topology.connection.name);
+      const messages = new AckBatch(options.name, topology.connection.name, resolveTags(channel, options.name, topology.connection.name));
+      const subscriber = subscribe.bind(undefined, options.uniqueName, channel, topology, serializers, messages, options);
+      const definer = define.bind(undefined, channel, options, subscriber, topology.connection.name);
       return {
         channel: channel,
         messages: messages,

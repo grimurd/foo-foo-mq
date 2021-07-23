@@ -3,8 +3,8 @@ const rabbit = require('../../src/index.js');
 const config = require('./configuration');
 
 describe('Message Acknowledgments Disabled (noAck: true)', function () {
-  var messagesToSend;
-  var harness;
+  let messagesToSend;
+  let harness;
 
   before(function (done) {
     rabbit.configure({

@@ -3,8 +3,8 @@ const rabbit = require('../../src/index.js');
 const config = require('./configuration');
 
 describe('Consistent Hash Exchange', function () {
-  var limit;
-  var harness;
+  let limit;
+  let harness;
 
   before(function (done) {
     rabbit.configure({

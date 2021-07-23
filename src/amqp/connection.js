@@ -96,7 +96,7 @@ function readFromFileIfPathOrDefaultToInput (possiblePathOrValue) {
 }
 
 const Adapter = function (parameters) {
-  var uriOpts = parseUri(parameters.uri);
+  const uriOpts = parseUri(parameters.uri);
   Object.assign(parameters, uriOpts);
   const hosts = getOption(parameters, 'host');
   const servers = getOption(parameters, 'server');
@@ -152,9 +152,8 @@ const Adapter = function (parameters) {
 Adapter.prototype.connect = function () {
   return new Promise(function (resolve, reject) {
     const attempted = [];
-    var attempt;
-    attempt = function () {
-      var nextUri = this.getNextUri();
+    const attempt = function () {
+      const nextUri = this.getNextUri();
       log.info("Attempting connection to '%s' (%s)", this.name, nextUri);
       function onConnection (connection) {
         connection.uri = nextUri;

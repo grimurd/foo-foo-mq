@@ -11,7 +11,7 @@ You can easily break this by removing the binding between
 the deadletter exchange and deadletter queue (for example)
 */
 describe('Rejecting Messages To A Deadletter', function () {
-  var harness;
+  let harness;
 
   before(function (done) {
     rabbit.configure({

@@ -1,5 +1,5 @@
 require('../setup.js');
-var ampqQueue = require('../../src/amqp/queue');
+const ampqQueue = require('../../src/amqp/queue');
 
 describe('AMQP Queue', function () {
   let amqpChannelMock, options, topology, serializers;

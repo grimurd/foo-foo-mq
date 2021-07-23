@@ -1,5 +1,5 @@
 // require( 'when/monitor/console' );
-var rabbit = require('../../src/index.js');
+const rabbit = require('../../src/index.js');
 
 // it can make a lot of sense to share topology definition across
 // services that will be using the same topology to avoid
@@ -17,10 +17,10 @@ rabbit.on('unreachable', function () {
 });
 
 function publish (total) {
-  var i;
+  let i;
 
-  var send = function (x) {
-    var direction = (x % 2 === 0) ? 'left' : 'right';
+  const send = function (x) {
+    const direction = (x % 2 === 0) ? 'left' : 'right';
     rabbit.publish('topic-example-x', {
       routingKey: direction,
       type: direction,

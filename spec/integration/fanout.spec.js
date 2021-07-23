@@ -3,7 +3,7 @@ const rabbit = require('../../src/index.js');
 const config = require('./configuration');
 
 describe('Fanout Exchange With Multiple Subscribed Queues', function () {
-  var harness;
+  let harness;
 
   before(function (done) {
     rabbit.configure({

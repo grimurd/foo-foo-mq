@@ -1,5 +1,5 @@
-var rabbit = require('../../src/index.js');
-var fs = require('fs');
+const rabbit = require('../../src/index.js');
+const fs = require('fs');
 
 rabbit.log(
   { level: 'debug', stream: fs.createWriteStream('./debug.log'), objectMode: true }
@@ -30,13 +30,13 @@ rabbit.on('unreachable', function () {
 });
 
 function publish (batchSize, total) {
-  var subtotal = total;
+  let subtotal = total;
   if (total > batchSize) {
     subtotal = batchSize;
   }
-  var pending = new Array(subtotal);
+  const pending = new Array(subtotal);
   total -= subtotal;
-  var lost = 0;
+  let lost = 0;
   for (let i = 0; i < subtotal; i++) {
     pending.push(
       rabbit.publish('wascally-pubsub-messages-x', {

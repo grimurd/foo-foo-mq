@@ -1,16 +1,16 @@
 require('../setup.js');
-var _ = require('lodash');
-var topologyFn = require('../../src/topology');
-var noOp = function () {};
-var emitter = require('./emitter');
-var info = require('../../src/info');
+const _ = require('lodash');
+const topologyFn = require('../../src/topology');
+const noOp = function () {};
+const emitter = require('./emitter');
+const info = require('../../src/info');
 
 function connectionFn () {
-  var handlers = {};
+  let handlers = {};
 
   function raise (ev) {
     if (handlers[ev]) {
-      var args = Array.prototype.slice.call(arguments, 1);
+      const args = Array.prototype.slice.call(arguments, 1);
       _.each(handlers[ev], function (handler) {
         if (handler) {
           handler.apply(undefined, args);
@@ -36,7 +36,7 @@ function connectionFn () {
     handlers = {};
   }
 
-  var connection = {
+  const connection = {
     name: 'default',
     fail: function (err) {
       this.state = 'failed';
@@ -67,7 +67,7 @@ function connectionFn () {
 
 describe('Topology', function () {
   describe('when initializing with default reply queue', function () {
-    var topology, conn, replyQueue, ex, q, controlMock;
+    let topology, conn, replyQueue, ex, q, controlMock;
 
     before(function (done) {
       ex = emitter();
@@ -76,20 +76,20 @@ describe('Topology', function () {
         q.raise('defined');
         return Promise.resolve();
       };
-      var Exchange = function () {
+      const Exchange = function () {
         return ex;
       };
-      var Queue = function () {
+      const Queue = function () {
         return q;
       };
       conn = connectionFn();
 
-      var control = {
+      const control = {
         bindQueue: noOp
       };
       controlMock = sinon.mock(control);
 
-      var uniqueQueueName = 'top-q-' + info.createHash();
+      const uniqueQueueName = 'top-q-' + info.createHash();
       controlMock
         .expects('bindQueue')
         .once()
@@ -132,17 +132,17 @@ describe('Topology', function () {
     });
 
     describe('when recovering from disconnection', function () {
-      var controlMock;
+      let controlMock;
       before(function (done) {
         replyQueue = undefined;
 
-        var control = {
+        const control = {
           bindExchange: noOp,
           bindQueue: noOp
         };
         controlMock = sinon.mock(control);
 
-        var uniqueQueueName = 'top-q-' + info.createHash();
+        const uniqueQueueName = 'top-q-' + info.createHash();
         controlMock
           .expects('bindExchange')
           .never();
@@ -182,7 +182,7 @@ describe('Topology', function () {
   });
 
   describe('when initializing with custom reply queue', function () {
-    var topology, conn, replyQueue, ex, q;
+    let topology, conn, replyQueue, ex, q;
 
     before(function (done) {
       ex = emitter();
@@ -191,14 +191,14 @@ describe('Topology', function () {
         q.raise('defined');
         return Promise.resolve();
       };
-      var Exchange = function () {
+      const Exchange = function () {
         return ex;
       };
-      var Queue = function () {
+      const Queue = function () {
         return q;
       };
       conn = connectionFn();
-      var options = {
+      const options = {
         replyQueue: {
           name: 'mine',
           uniqueName: 'mine',
@@ -251,7 +251,7 @@ describe('Topology', function () {
   });
 
   describe('when initializing with no reply queue', function () {
-    var topology, conn, replyQueue, ex, q;
+    let topology, conn, replyQueue, ex, q;
 
     before(function (done) {
       ex = emitter();
@@ -260,14 +260,14 @@ describe('Topology', function () {
         q.raise('defined');
         return Promise.resolve();
       };
-      var Exchange = function () {
+      const Exchange = function () {
         return ex;
       };
-      var Queue = function () {
+      const Queue = function () {
         return q;
       };
       conn = connectionFn();
-      var options = {
+      const options = {
         replyQueue: false
       };
       topology = topologyFn(conn.instance, options, {}, undefined, undefined, Exchange, Queue);
@@ -290,7 +290,7 @@ describe('Topology', function () {
   });
 
   describe('when creating valid exchange', function () {
-    var topology, conn, exchange, ex, q;
+    let topology, conn, exchange, ex, q;
 
     before(function (done) {
       ex = emitter();
@@ -299,10 +299,10 @@ describe('Topology', function () {
         ex.raise('defined');
         return Promise.resolve();
       };
-      var Exchange = function () {
+      const Exchange = function () {
         return ex;
       };
-      var Queue = function () {
+      const Queue = function () {
         return q;
       };
       conn = connectionFn();
@@ -327,8 +327,8 @@ describe('Topology', function () {
   });
 
   describe('when creating a duplicate exchange', function () {
-    var topology, conn, exchange, ex, q;
-    var calls = 0;
+    let topology, conn, exchange, ex, q;
+    let calls = 0;
 
     before(function (done) {
       ex = emitter();
@@ -337,11 +337,11 @@ describe('Topology', function () {
         ex.raise('defined');
         return Promise.resolve();
       };
-      var Exchange = function () {
+      const Exchange = function () {
         calls++;
         return ex;
       };
-      var Queue = function () {
+      const Queue = function () {
         return q;
       };
       conn = connectionFn();
@@ -371,7 +371,7 @@ describe('Topology', function () {
   });
 
   describe('when creating invalid exchange', function () {
-    var topology, conn, error, ex, q;
+    let topology, conn, error, ex, q;
 
     before(function (done) {
       ex = emitter();
@@ -379,10 +379,10 @@ describe('Topology', function () {
       ex.check = function () {
         return Promise.resolve();
       };
-      var Exchange = function () {
+      const Exchange = function () {
         return ex;
       };
-      var Queue = function () {
+      const Queue = function () {
         return q;
       };
       conn = connectionFn();
@@ -407,7 +407,7 @@ describe('Topology', function () {
   });
 
   describe('when creating invalid queue', function () {
-    var topology, conn, error, ex, q;
+    let topology, conn, error, ex, q;
 
     before(function (done) {
       ex = emitter();
@@ -415,10 +415,10 @@ describe('Topology', function () {
       ex.check = function () {
         return Promise.resolve();
       };
-      var Exchange = function () {
+      const Exchange = function () {
         return ex;
       };
-      var Queue = function () {
+      const Queue = function () {
         return q;
       };
       conn = connectionFn();
@@ -443,23 +443,23 @@ describe('Topology', function () {
   });
 
   describe('when deleting an existing exchange', function () {
-    var topology, conn, exchange, ex, q;
+    let topology, conn, exchange, ex, q;
 
     before(function (done) {
       ex = emitter();
       q = emitter();
       ex.release = noOp;
-      var Exchange = function () {
+      const Exchange = function () {
         return ex;
       };
-      var Queue = function () {
+      const Queue = function () {
         return q;
       };
       conn = connectionFn();
-      var control = {
+      const control = {
         deleteExchange: noOp
       };
-      var controlMock = sinon.mock(control);
+      const controlMock = sinon.mock(control);
       controlMock
         .expects('deleteExchange')
         .once()
@@ -492,23 +492,23 @@ describe('Topology', function () {
   });
 
   describe('when deleting an existing queue', function () {
-    var topology, conn, queue, ex, q;
+    let topology, conn, queue, ex, q;
 
     before(function () {
       ex = emitter();
       q = emitter();
       q.release = noOp;
-      var Exchange = function () {
+      const Exchange = function () {
         return ex;
       };
-      var Queue = function () {
+      const Queue = function () {
         return q;
       };
       conn = connectionFn();
-      var control = {
+      const control = {
         deleteQueue: noOp
       };
-      var controlMock = sinon.mock(control);
+      const controlMock = sinon.mock(control);
       controlMock
         .expects('deleteQueue')
         .once()
@@ -540,23 +540,23 @@ describe('Topology', function () {
   });
 
   describe('when creating an exchange to exchange binding with no keys', function () {
-    var topology, conn, ex, q;
+    let topology, conn, ex, q;
 
     before(function () {
       ex = emitter();
       q = emitter();
-      var Exchange = function () {
+      const Exchange = function () {
         return ex;
       };
-      var Queue = function () {
+      const Queue = function () {
         return q;
       };
       conn = connectionFn();
-      var control = {
+      const control = {
         bindExchange: noOp,
         bindQueue: noOp
       };
-      var controlMock = sinon.mock(control);
+      const controlMock = sinon.mock(control);
       controlMock
         .expects('bindExchange')
         .once()
@@ -575,25 +575,25 @@ describe('Topology', function () {
   });
 
   describe('when removing an exchange to exchange binding with no keys', function () {
-    var topology, conn, ex, q;
+    let topology, conn, ex, q;
 
     before(function () {
       ex = emitter();
       q = emitter();
-      var Exchange = function () {
+      const Exchange = function () {
         return ex;
       };
-      var Queue = function () {
+      const Queue = function () {
         return q;
       };
       conn = connectionFn();
-      var control = {
+      const control = {
         bindExchange: noOp,
         bindQueue: noOp,
         unbindQueue: noOp,
         unbindExchange: noOp
       };
-      var controlMock = sinon.mock(control);
+      const controlMock = sinon.mock(control);
       controlMock
         .expects('bindExchange')
         .once()
@@ -618,23 +618,23 @@ describe('Topology', function () {
   });
 
   describe('when creating an exchange to queue binding with no keys', function () {
-    var topology, conn, ex, q;
+    let topology, conn, ex, q;
 
     before(function () {
       ex = emitter();
       q = emitter();
-      var Exchange = function () {
+      const Exchange = function () {
         return ex;
       };
-      var Queue = function () {
+      const Queue = function () {
         return q;
       };
       conn = connectionFn();
-      var control = {
+      const control = {
         bindExchange: noOp,
         bindQueue: noOp
       };
-      var controlMock = sinon.mock(control);
+      const controlMock = sinon.mock(control);
       controlMock.expects('bindQueue')
         .withArgs('to', 'from', 'a.*')
         .returns(Promise.resolve());
@@ -658,25 +658,25 @@ describe('Topology', function () {
   });
 
   describe('when removing an exchange to queue binding with no keys', function () {
-    var topology, conn, ex, q;
+    let topology, conn, ex, q;
 
     before(function () {
       ex = emitter();
       q = emitter();
-      var Exchange = function () {
+      const Exchange = function () {
         return ex;
       };
-      var Queue = function () {
+      const Queue = function () {
         return q;
       };
       conn = connectionFn();
-      var control = {
+      const control = {
         bindExchange: noOp,
         bindQueue: noOp,
         unbindExchange: noOp,
         unbindQueue: noOp
       };
-      var controlMock = sinon.mock(control);
+      const controlMock = sinon.mock(control);
       controlMock.expects('bindQueue')
         .withArgs('to', 'from', 'a.*')
         .returns(Promise.resolve());
@@ -705,23 +705,23 @@ describe('Topology', function () {
   });
 
   describe('when creating an exchange to queue binding with keys', function () {
-    var topology, conn, ex, q;
+    let topology, conn, ex, q;
 
     before(function () {
       ex = emitter();
       q = emitter();
-      var Exchange = function () {
+      const Exchange = function () {
         return ex;
       };
-      var Queue = function () {
+      const Queue = function () {
         return q;
       };
       conn = connectionFn();
-      var control = {
+      const control = {
         bindExchange: noOp,
         bindQueue: noOp
       };
-      var controlMock = sinon.mock(control);
+      const controlMock = sinon.mock(control);
       controlMock.expects('bindQueue')
         .withArgs('to', 'from', 'a.*')
         .returns(Promise.resolve());
@@ -743,25 +743,25 @@ describe('Topology', function () {
     });
 
     describe('when removing an exchange to queue binding with keys', function () {
-      var topology, conn, ex, q;
+      let topology, conn, ex, q;
 
       before(function () {
         ex = emitter();
         q = emitter();
-        var Exchange = function () {
+        const Exchange = function () {
           return ex;
         };
-        var Queue = function () {
+        const Queue = function () {
           return q;
         };
         conn = connectionFn();
-        var control = {
+        const control = {
           bindExchange: noOp,
           bindQueue: noOp,
           unbindExchange: noOp,
           unbindQueue: noOp
         };
-        var controlMock = sinon.mock(control);
+        const controlMock = sinon.mock(control);
         controlMock.expects('bindQueue')
           .withArgs('to', 'from', 'a.*')
           .returns(Promise.resolve());
@@ -791,15 +791,15 @@ describe('Topology', function () {
 
   describe('when a connection to rabbit cannot be established', function () {
     describe('when attempting to create an exchange', function () {
-      var topology, conn, error, ex, q;
+      let topology, conn, error, ex, q;
 
       before(function () {
         ex = emitter();
         q = emitter();
-        var Exchange = function () {
+        const Exchange = function () {
           return ex;
         };
-        var Queue = function () {
+        const Queue = function () {
           return q;
         };
         conn = connectionFn();
@@ -824,15 +824,15 @@ describe('Topology', function () {
     });
 
     describe('when attempting to create a queue', function () {
-      var topology, conn, error, ex, q;
+      let topology, conn, error, ex, q;
 
       before(function () {
         ex = emitter();
         q = emitter();
-        var Exchange = function () {
+        const Exchange = function () {
           return ex;
         };
-        var Queue = function () {
+        const Queue = function () {
           return q;
         };
         conn = connectionFn();

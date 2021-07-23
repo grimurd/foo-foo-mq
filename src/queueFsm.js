@@ -22,11 +22,11 @@ function unhandle (handlers) {
   );
 }
 
-var Factory = function (options, connection, topology, serializers, queueFn) {
+const Factory = function (options, connection, topology, serializers, queueFn) {
   // allows us to optionally provide a mock
   queueFn = queueFn || require('./amqp/queue');
 
-  var Fsm = machina.Fsm.extend({
+  const Fsm = machina.Fsm.extend({
     name: options.name,
     uniqueName: options.uniqueName,
     responseSubscriptions: {},
@@ -38,11 +38,11 @@ var Factory = function (options, connection, topology, serializers, queueFn) {
     releasers: [],
 
     _define: function (queue) {
-      var onError = function (err) {
+      const onError = function (err) {
         this.failedWith = err;
         this.transition('failed');
       }.bind(this);
-      var onDefined = function (defined) {
+      const onDefined = function (defined) {
         if (!this.name) {
           this.name = defined.queue;
           options.name = defined.queue;
@@ -56,19 +56,19 @@ var Factory = function (options, connection, topology, serializers, queueFn) {
     },
 
     _listen: function (queue) {
-      var handlers = [];
-      var emit = this.emit.bind(this);
+      const handlers = [];
+      const emit = this.emit.bind(this);
 
-      var unsubscriber = function () {
+      const unsubscriber = function () {
         return queue.unsubscribe();
       };
 
-      var onPurge = function (messageCount) {
+      const onPurge = function (messageCount) {
         log.info(`Purged ${messageCount} queue ${options.name} - ${connection.name}`);
         this.handle('purged', messageCount);
       }.bind(this);
 
-      var purger = function () {
+      const purger = function () {
         return queue
           .purge()
           .then(onPurge)
@@ -77,7 +77,7 @@ var Factory = function (options, connection, topology, serializers, queueFn) {
           });
       };
 
-      var onSubscribe = function () {
+      const onSubscribe = function () {
         log.info('Subscription to (%s) queue %s - %s started with consumer tag %s',
           options.noAck ? 'untracked' : 'tracked',
           options.name,
@@ -87,7 +87,7 @@ var Factory = function (options, connection, topology, serializers, queueFn) {
         this.handle('subscribed');
       }.bind(this);
 
-      var subscriber = function (exclusive) {
+      const subscriber = function (exclusive) {
         return queue
           .subscribe(!!exclusive)
           .then(onSubscribe)
@@ -96,7 +96,7 @@ var Factory = function (options, connection, topology, serializers, queueFn) {
           });
       };
 
-      var releaser = function (closed) {
+      const releaser = function (closed) {
         // remove handlers established on queue
         unhandle(handlers);
         if (queue && queue.getMessageCount() > 0) {
@@ -142,7 +142,7 @@ var Factory = function (options, connection, topology, serializers, queueFn) {
     },
 
     _release: function (closed) {
-      var release = this.releasers.shift();
+      const release = this.releasers.shift();
       if (release) {
         release(closed);
       } else {
@@ -151,14 +151,14 @@ var Factory = function (options, connection, topology, serializers, queueFn) {
     },
 
     check: function () {
-      var deferred = defer();
+      const deferred = defer();
       this.handle('check', deferred);
       return deferred.promise;
     },
 
     purge: function () {
       return new Promise(function (resolve, reject) {
-        var _handlers;
+        let _handlers = null;
         function cleanResolve (result) {
           unhandle(_handlers);
           resolve(result);
@@ -186,7 +186,7 @@ var Factory = function (options, connection, topology, serializers, queueFn) {
 
     release: function () {
       return new Promise(function (resolve, reject) {
-        var _handlers;
+        let _handlers = null;
         function cleanResolve () {
           unhandle(_handlers);
           resolve();
@@ -213,7 +213,7 @@ var Factory = function (options, connection, topology, serializers, queueFn) {
       options.subscribe = true;
       options.exclusive = exclusive;
       return new Promise(function (resolve, reject) {
-        var _handlers;
+        let _handlers = null;
         function cleanResolve () {
           unhandle(_handlers);
           resolve();
@@ -234,7 +234,7 @@ var Factory = function (options, connection, topology, serializers, queueFn) {
 
     unsubscribe: function () {
       options.subscribe = false;
-      var unsubscriber = this.unsubscribers.shift();
+      const unsubscriber = this.unsubscribers.shift();
       if (unsubscriber) {
         return unsubscriber();
       } else {
@@ -492,7 +492,7 @@ var Factory = function (options, connection, topology, serializers, queueFn) {
     }
   });
 
-  var fsm = new Fsm();
+  const fsm = new Fsm();
   connection.addQueue(fsm);
   return fsm;
 };

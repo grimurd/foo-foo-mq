@@ -1,14 +1,14 @@
 require('../setup.js');
 const _ = require('lodash');
-var publishLog = require('../../src/publishLog');
+const publishLog = require('../../src/publishLog');
 
 describe('Publish log', function () {
   describe('when adding a message', function () {
-    var log;
-    var zero = {};
-    var one = {};
-    var two = {};
-    var three = {};
+    let log;
+    const zero = {};
+    const one = {};
+    const two = {};
+    const three = {};
     before(function () {
       log = publishLog();
       log.add(zero);
@@ -30,7 +30,7 @@ describe('Publish log', function () {
   });
 
   describe('when removing a message', function () {
-    var log;
+    let log;
 
     before(function () {
       log = publishLog();
@@ -42,7 +42,7 @@ describe('Publish log', function () {
     });
 
     describe('with valid sequence numbers', function () {
-      var fourRemoved, zeroRemoved;
+      let fourRemoved, zeroRemoved;
       before(function () {
         fourRemoved = log.remove(4);
         zeroRemoved = log.remove({ sequenceNo: 0 });
@@ -58,7 +58,7 @@ describe('Publish log', function () {
       });
 
       describe('next message should get correct sequence', function () {
-        var m;
+        let m;
         before(function () {
           m = {};
           log.add(m);
@@ -75,7 +75,7 @@ describe('Publish log', function () {
     });
 
     describe('with an invalid sequence number', function () {
-      var removed;
+      let removed;
       before(function () {
         removed = log.remove(10);
       });
@@ -89,7 +89,7 @@ describe('Publish log', function () {
       });
 
       describe('next message should get correct sequence', function () {
-        var m;
+        let m;
         before(function () {
           m = {};
           log.add(m);
@@ -107,12 +107,12 @@ describe('Publish log', function () {
   });
 
   describe('when resetting log', function () {
-    var log;
-    var zero = { id: 'zero' };
-    var one = { id: 'one' };
-    var two = { id: 'two' };
-    var three = { id: 'three' };
-    var list;
+    let log;
+    const zero = { id: 'zero' };
+    const one = { id: 'one' };
+    const two = { id: 'two' };
+    const three = { id: 'three' };
+    let list;
     before(function () {
       log = publishLog();
       log.add(zero);
@@ -144,7 +144,7 @@ describe('Publish log', function () {
     });
 
     describe('when adding message to reset log', function () {
-      var tmp;
+      let tmp;
       before(function () {
         tmp = {};
         log.add(tmp);

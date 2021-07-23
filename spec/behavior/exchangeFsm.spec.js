@@ -6,7 +6,7 @@ const noop = () => {};
 const _ = require('lodash');
 
 function exchangeFn (options) {
-  var channel = {
+  const channel = {
     name: options.name,
     type: options.type,
     channel: emitter(),
@@ -14,7 +14,7 @@ function exchangeFn (options) {
     release: noop,
     publish: noop
   };
-  var channelMock = sinon.mock(channel);
+  const channelMock = sinon.mock(channel);
 
   return {
     mock: channelMock,
@@ -26,15 +26,15 @@ function exchangeFn (options) {
 
 describe('Exchange FSM', function () {
   describe('when connection is unreachable', function () {
-    var connection, topology, exchange, channelMock, options, error;
-    var published;
+    let connection, topology, exchange, channelMock, options, error;
+    let published;
     before(function (done) {
       options = { name: 'test', type: 'test' };
       connection = emitter();
       connection.addExchange = noop;
       topology = emitter();
 
-      var ex = exchangeFn(options);
+      const ex = exchangeFn(options);
       channelMock = ex.mock;
       channelMock
         .expects('define')
@@ -65,7 +65,7 @@ describe('Exchange FSM', function () {
     });
 
     describe('when publishing in unreachable state', function () {
-      var error;
+      let error;
 
       before(function () {
         return exchange.publish({}).catch(function (err) {
@@ -90,17 +90,17 @@ describe('Exchange FSM', function () {
   });
 
   describe('when definition has failed with error', function () {
-    var connection, topology, exchange, channelMock, options;
-    var published;
+    let connection, topology, exchange, channelMock, options;
+    let published;
     before(function () {
       options = { name: 'test', type: 'test' };
       connection = emitter();
       connection.addExchange = noop;
       topology = emitter();
 
-      var ex = exchangeFn(options);
+      const ex = exchangeFn(options);
       channelMock = ex.mock;
-      var deferred = defer();
+      const deferred = defer();
       channelMock
         .expects('define')
         .once()
@@ -126,7 +126,7 @@ describe('Exchange FSM', function () {
     });
 
     describe('when publishing in unreachable state', function () {
-      var error;
+      let error;
 
       before(function () {
         return exchange.publish({}).catch(function (err) {
@@ -151,7 +151,7 @@ describe('Exchange FSM', function () {
   });
 
   describe('when initializing succeeds', function () {
-    var connection, topology, exchange, ex, channelMock, options, error;
+    let connection, topology, exchange, ex, channelMock, options, error;
 
     before(function (done) {
       options = { name: 'test', type: 'test' };
@@ -185,7 +185,7 @@ describe('Exchange FSM', function () {
     });
 
     describe('when publishing in ready state', function () {
-      var promise;
+      let promise;
 
       before(function () {
         channelMock

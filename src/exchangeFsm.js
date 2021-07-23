@@ -77,7 +77,7 @@ const Factory = function (options, connection, topology, serializers, exchangeFn
       }
 
       function onCleanupError () {
-        var count = this.published.count();
+        const count = this.published.count();
         if (count > 0) {
           exLog.warn("%s exchange '%s', connection '%s' was released with %d messages unconfirmed",
             this.type,
@@ -131,7 +131,7 @@ const Factory = function (options, connection, topology, serializers, exchangeFn
     },
 
     check: function () {
-      var deferred = defer();
+      const deferred = defer();
       this.handle('check', deferred);
       return deferred.promise;
     },
@@ -161,12 +161,12 @@ const Factory = function (options, connection, topology, serializers, exchangeFn
         );
         return Promise.reject(new Error('Exchange has reached the limit of messages waiting on a connection'));
       }
-      var publishTimeout = message.timeout || options.publishTimeout || message.connectionPublishTimeout || 0;
+      const publishTimeout = message.timeout || options.publishTimeout || message.connectionPublishTimeout || 0;
       return new Promise(function (resolve, reject) {
-        var timeout;
-        var timedOut;
-        var failedSub;
-        var closedSub;
+        let timeout;
+        let timedOut;
+        let failedSub = null;
+        let closedSub = null;
         if (publishTimeout > 0) {
           timeout = setTimeout(function () {
             timedOut = true;
@@ -185,7 +185,7 @@ const Factory = function (options, connection, topology, serializers, exchangeFn
           failedSub.unsubscribe();
           closedSub.unsubscribe();
         }
-        var op = function (err) {
+        const op = function (err) {
           if (err) {
             onRejected.bind(this)(err);
           } else {

@@ -1,13 +1,13 @@
 require('../setup.js');
-var postal = require('postal');
-var signal = postal.channel('rabbit.ack');
-var AckBatch = require('../../src/ackBatch.js');
-var noOp = function () {};
+const postal = require('postal');
+const signal = postal.channel('rabbit.ack');
+const AckBatch = require('../../src/ackBatch.js');
+const noOp = function () {};
 
 describe('Ack Batching', function () {
   describe('when adding a new message', function () {
-    var batch;
-    var messageData;
+    let batch;
+    let messageData;
     before(function () {
       batch = new AckBatch('test-queue', 'test-connection', noOp);
       messageData = batch.getMessageOps(101);
@@ -50,9 +50,9 @@ describe('Ack Batching', function () {
   });
 
   describe('when resolving with no tags', function () {
-    var batch;
-    var resolver;
-    var status;
+    let batch;
+    let resolver;
+    let status;
     before(function (done) {
       resolver = function (s) {
         status = s;
@@ -77,9 +77,9 @@ describe('Ack Batching', function () {
   });
 
   describe('when resolving with only pending tags', function () {
-    var batch;
-    var resolver;
-    var status;
+    let batch;
+    let resolver;
+    let status;
     before(function (done) {
       resolver = function (s) {
         status = s;
@@ -117,9 +117,9 @@ describe('Ack Batching', function () {
   });
 
   describe('when resolving with leading pending tags', function () {
-    var batch;
-    var resolver;
-    var status;
+    let batch;
+    let resolver;
+    let status;
     before(function (done) {
       resolver = function (s) {
         status = s;
@@ -159,9 +159,9 @@ describe('Ack Batching', function () {
   });
 
   describe('when resolving with all ack tags', function () {
-    var batch;
-    var resolver;
-    var status, data;
+    let batch;
+    let resolver;
+    let status, data;
     before(function (done) {
       resolver = function (s, d) {
         status = s;
@@ -210,9 +210,9 @@ describe('Ack Batching', function () {
   });
 
   describe('when resolving with all nack tags', function () {
-    var batch;
-    var resolver;
-    var status, data;
+    let batch;
+    let resolver;
+    let status, data;
     before(function (done) {
       resolver = function (s, d) {
         status = s;
@@ -261,9 +261,9 @@ describe('Ack Batching', function () {
   });
 
   describe('when resolving with all reject tags', function () {
-    var batch;
-    var resolver;
-    var status, data;
+    let batch;
+    let resolver;
+    let status, data;
     before(function (done) {
       resolver = function (s, d) {
         status = s;
@@ -312,10 +312,10 @@ describe('Ack Batching', function () {
   });
 
   describe('when resolving with no pending tags (mixed ops)', function () {
-    var batch;
-    var resolver;
-    var status = [];
-    var data = [];
+    let batch;
+    let resolver;
+    const status = [];
+    const data = [];
     before(function (done) {
       resolver = function (s, d) {
         status.push(s);
@@ -327,7 +327,7 @@ describe('Ack Batching', function () {
         done();
       });
 
-      var messages = [
+      const messages = [
         batch.getMessageOps(101),
         batch.getMessageOps(102),
         batch.getMessageOps(103),

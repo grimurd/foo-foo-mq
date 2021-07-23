@@ -1,9 +1,9 @@
 module.exports = (name) => {
-  var handlers = {};
+  let handlers = {};
 
   function raise (ev) {
     if (handlers[ev]) {
-      var args = Array.prototype.slice.call(arguments, 1);
+      const args = Array.prototype.slice.call(arguments, 1);
       handlers[ev].forEach(function (handler) {
         if (handler) {
           handler.apply(undefined, args);

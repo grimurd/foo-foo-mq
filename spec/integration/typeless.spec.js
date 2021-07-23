@@ -6,7 +6,7 @@ const config = require('./configuration');
   Demonstrates handling Messages With No Type Provided
 */
 describe('No Type Handling', function () {
-  var harness;
+  let harness;
 
   before(function (done) {
     rabbit.configure({

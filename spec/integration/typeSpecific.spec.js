@@ -6,7 +6,7 @@ const config = require('./configuration');
   Demonstrates handling by type specification from *any* queue
 */
 describe('Type Handling On Any Queue', function () {
-  var harness;
+  let harness;
 
   before(function (done) {
     rabbit.configure({

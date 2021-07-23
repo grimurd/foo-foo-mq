@@ -8,7 +8,7 @@ The harness provides a default returned handler that captures
 returned messages and adds them to a list.
 */
 describe('Undeliverable & Mandatory: true', function () {
-  var harness;
+  let harness;
 
   before(function (done) {
     rabbit.configure({

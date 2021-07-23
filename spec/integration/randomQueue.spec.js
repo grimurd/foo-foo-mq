@@ -12,8 +12,8 @@ Demonstrates a few things:
 It shows that you _can_ move messages between services with minimal configuration.
 */
 describe('Random Queue Name', function () {
-  var harness;
-  var queueName;
+  let harness;
+  let queueName;
   before((done) => {
     rabbit.configure({
       connection: config.connection,

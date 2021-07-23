@@ -1,5 +1,6 @@
 require('../../setup');
 const fs = require('fs');
+const path = require('path');
 const ampqlib = require('amqplib');
 const rabbit = require('../../../src/index.js');
 const config = require('../../integration/configuration');
@@ -62,7 +63,7 @@ describe('AMQP Connection', function () {
   describe('ssl support options when values are paths', function () {
     let amqplibConnectSpy;
     let sandbox;
-    const getLocalPath = (fileName) => `${__dirname}/${fileName}`;
+    const getLocalPath = (fileName) => path.join(__dirname, fileName);
     const sslPathSettings = [
       getLocalPath('caPath1'),
       getLocalPath('caPath2'),
@@ -73,7 +74,7 @@ describe('AMQP Connection', function () {
 
     before(function (done) {
       sandbox = sinon.createSandbox();
-      sslPathSettings.map((settingName) => {
+      sslPathSettings.forEach((settingName) => {
         fs.writeFileSync(settingName, `${settingName.split('/').pop()}-file-contents`);
       });
 
@@ -95,7 +96,7 @@ describe('AMQP Connection', function () {
     });
 
     after(() => {
-      sslPathSettings.map((settingName) => {
+      sslPathSettings.forEach((settingName) => {
         fs.unlinkSync(settingName);
       });
       sandbox.restore();

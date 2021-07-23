@@ -42,7 +42,7 @@ describe('No Reply Queue (replyQueue: false)', function () {
     }).then(() => {
       messagesToSend = 3;
       harness.handle('no.replyQueue');
-      for (var i = 0; i < messagesToSend; i++) {
+      for (let i = 0; i < messagesToSend; i++) {
         rabbit.publish('noreply-ex.direct', {
           connectionName: 'noReplyQueue',
           type: 'no.replyQueue',
