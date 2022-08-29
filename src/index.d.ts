@@ -138,10 +138,10 @@ declare namespace Broker {
     reply<ReplyBodyType>(
       message: ReplyBodyType,
       options?: {
-        more: string;
-        replyType: string;
-        contentType: string;
-        headers: {
+        more?: string;
+        replyType?: string;
+        contentType?: string;
+        headers?: {
           [key: string]: string;
         };
       }
